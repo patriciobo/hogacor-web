@@ -11,7 +11,7 @@ npm run build     # chequeo de tipos + build estático en dist/
 npm run preview
 ```
 
-`dist/` es HTML/CSS estático: se puede publicar en Cloudflare Pages, Netlify, Vercel o cualquier hosting
+`dist/` es HTML/CSS estático. Se publica en Vercel (`vercel.json`); también sirve cualquier hosting estático
 (comando de build `npm run build`, carpeta de salida `dist`).
 
 ## Dónde editar
