@@ -1,0 +1,182 @@
+---
+import { SITE, waLink } from "../site";
+import Icon from "./Icon.astro";
+
+interface Props {
+  /** Proyecto preseleccionado según la página. */
+  proyecto?: string;
+  titulo?: string;
+}
+const { proyecto = "", titulo = "Contanos tu proyecto" } = Astro.props;
+const opciones = ["Ampliación en planta baja", "Ampliación en planta alta", "Vivienda completa", "Módulo habitacional H1 / H2 / H3", "Covacha / Covacha Mini", "Otro"];
+---
+
+<section id="contacto" class="dark contacto">
+  <div class="wrap grid">
+    <div class="intro">
+      <span class="eyebrow">Presupuesto sin cargo</span>
+      <h2>{titulo}</h2>
+      <p class="lead">
+        Coordinamos una visita sin compromiso, relevamos el lugar y te entregamos un presupuesto detallado por etapas para que decidas con
+        toda la información.
+      </p>
+      <ul class="datos">
+        <li>
+          <Icon name="whatsapp" />
+          <div><strong>WhatsApp</strong><a href={waLink()} target="_blank" rel="noopener">{SITE.whatsappTexto}</a></div>
+        </li>
+        <li>
+          <Icon name="phone" />
+          <div><strong>Teléfono</strong><a href={`tel:${SITE.telefonoE164}`}>{SITE.telefono}</a></div>
+        </li>
+        <li>
+          <Icon name="pin" />
+          <div><strong>Zona de trabajo</strong><span>{SITE.zona}</span></div>
+        </li>
+      </ul>
+    </div>
+
+    <form class="form" id="form-contacto" action={`https://wa.me/${SITE.whatsapp}`} method="get" target="_blank">
+      <div class="field">
+        <label for="c-nombre">Nombre</label>
+        <input id="c-nombre" name="nombre" autocomplete="name" required />
+      </div>
+      <div class="field">
+        <label for="c-localidad">Localidad o barrio</label>
+        <input id="c-localidad" name="localidad" autocomplete="address-level2" placeholder="Ej: Villa Allende" />
+      </div>
+      <div class="field">
+        <label for="c-proyecto">¿Qué querés construir?</label>
+        <select id="c-proyecto" name="proyecto">
+          {opciones.map((o) => <option selected={o === proyecto}>{o}</option>)}
+        </select>
+      </div>
+      <div class="field">
+        <label for="c-mensaje">Contanos un poco más <span>(opcional)</span></label>
+        <textarea id="c-mensaje" name="mensaje" rows="3" placeholder="Metros aproximados, para cuándo lo necesitás, si tenés planos…"></textarea>
+      </div>
+      <input type="hidden" name="text" />
+      <button class="btn btn-primary" type="submit"><Icon name="whatsapp" /> Enviar por WhatsApp</button>
+      <p class="hint">Se abre WhatsApp con tu consulta lista para enviar. No guardamos tus datos en este sitio.</p>
+    </form>
+  </div>
+</section>
+
+<script>
+  const form = document.getElementById("form-contacto") as HTMLFormElement | null;
+  form?.addEventListener("submit", (e) => {
+    e.preventDefault();
+    const d = new FormData(form);
+    const val = (k: string) => String(d.get(k) ?? "").trim();
+    const lineas = [
+      `Hola Hogacor, soy ${val("nombre")}.`,
+      `Quiero consultar por: ${val("proyecto")}.`,
+      val("localidad") && `Zona: ${val("localidad")}.`,
+      val("mensaje"),
+    ].filter(Boolean);
+    window.open(`${form.action}?text=${encodeURIComponent(lineas.join("\n"))}`, "_blank", "noopener");
+  });
+</script>
+
+<style>
+  .grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: clamp(32px, 6vw, 80px);
+    align-items: start;
+  }
+  .intro {
+    display: grid;
+    gap: 18px;
+  }
+  .datos {
+    list-style: none;
+    margin: 18px 0 0;
+    padding: 0;
+    display: grid;
+    gap: 18px;
+  }
+  .datos li {
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+    color: var(--accent);
+  }
+  .datos div {
+    display: grid;
+    color: #f3efe9;
+  }
+  .datos strong {
+    font-size: 0.78rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: #9d968d;
+    font-weight: 600;
+  }
+  .datos a {
+    font-size: 1.2rem;
+    font-weight: 600;
+    text-decoration: none;
+  }
+  .datos a:hover {
+    color: var(--accent);
+  }
+  .form {
+    display: grid;
+    gap: 16px;
+    background: #1f1d1b;
+    border: 1px solid #34312d;
+    border-radius: var(--radius);
+    padding: clamp(22px, 4vw, 36px);
+  }
+  .field {
+    display: grid;
+    gap: 6px;
+  }
+  label {
+    font-size: 0.9rem;
+    font-weight: 500;
+  }
+  label span {
+    color: #9d968d;
+    font-weight: 400;
+  }
+  input,
+  select,
+  textarea {
+    font: inherit;
+    font-size: 1rem;
+    color: #f3efe9;
+    background: #151413;
+    border: 1px solid #3f3b36;
+    border-radius: 10px;
+    padding: 12px 14px;
+    min-height: 50px;
+    width: 100%;
+  }
+  input::placeholder,
+  textarea::placeholder {
+    color: #7a736b;
+  }
+  input:focus,
+  select:focus,
+  textarea:focus {
+    outline: 2px solid var(--accent);
+    outline-offset: 0;
+    border-color: transparent;
+  }
+  .form .btn {
+    margin-top: 6px;
+    width: 100%;
+  }
+  .hint {
+    font-size: 0.82rem;
+    color: #9d968d;
+    text-align: center;
+  }
+  @media (max-width: 860px) {
+    .grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

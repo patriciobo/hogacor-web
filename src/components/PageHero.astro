@@ -1,0 +1,104 @@
+---
+import { Image } from "astro:assets";
+import { waLink } from "../site";
+import Icon from "./Icon.astro";
+
+interface Props {
+  eyebrow: string;
+  title: string;
+  lead: string;
+  img: ImageMetadata;
+  alt: string;
+  wa: string;
+  migas: { name: string; path: string }[];
+}
+const { eyebrow, title, lead, img, alt, wa, migas } = Astro.props;
+---
+
+<section class="page-hero">
+  <div class="wrap">
+    <nav aria-label="Ruta" class="migas">
+      <a href="/">Inicio</a>
+      {
+        migas.map((m) => (
+          <>
+            <span aria-hidden="true">/</span>
+            <a href={m.path} aria-current="page">
+              {m.name}
+            </a>
+          </>
+        ))
+      }
+    </nav>
+    <div class="grid">
+      <div class="copy">
+        <span class="eyebrow">{eyebrow}</span>
+        <h1>{title}</h1>
+        <p class="lead">{lead}</p>
+        <div class="cta">
+          <a class="btn btn-primary" href={waLink(wa)} target="_blank" rel="noopener"><Icon name="whatsapp" /> Pedí presupuesto</a>
+          <a class="btn btn-ghost" href="#contacto">Dejanos tu consulta</a>
+        </div>
+      </div>
+      <figure>
+        <Image src={img} alt={alt} widths={[520, 820, 1100]} sizes="(max-width: 900px) 100vw, 55vw" loading="eager" fetchpriority="high" />
+        <figcaption class="nota-render">Imagen ilustrativa.</figcaption>
+      </figure>
+    </div>
+  </div>
+</section>
+
+<style>
+  .page-hero {
+    padding-block: 28px clamp(56px, 8vw, 96px);
+  }
+  .migas {
+    display: flex;
+    gap: 8px;
+    font-size: 0.88rem;
+    color: var(--muted);
+    margin-bottom: clamp(24px, 4vw, 44px);
+  }
+  .migas a {
+    text-decoration: none;
+  }
+  .migas a:hover {
+    color: var(--ink);
+  }
+  .migas a[aria-current] {
+    color: var(--ink);
+    font-weight: 500;
+  }
+  .grid {
+    display: grid;
+    grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.05fr);
+    gap: clamp(32px, 5vw, 64px);
+    align-items: center;
+  }
+  .copy {
+    display: grid;
+    gap: 20px;
+  }
+  .cta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 6px;
+  }
+  figure {
+    margin: 0;
+    display: grid;
+    gap: 8px;
+  }
+  figure img {
+    width: 100%;
+    aspect-ratio: 16 / 11;
+    object-fit: cover;
+    border-radius: var(--radius);
+  }
+  @media (max-width: 900px) {
+    .grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

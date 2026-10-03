@@ -1,0 +1,304 @@
+---
+import { Image } from "astro:assets";
+import Compromisos from "../components/Compromisos.astro";
+import Contacto from "../components/Contacto.astro";
+import Faq from "../components/Faq.astro";
+import PageHero from "../components/PageHero.astro";
+import Proceso from "../components/Proceso.astro";
+import { FAQ_GENERAL, faqSchema } from "../content";
+import Base from "../layouts/Base.astro";
+import { SITE, anios } from "../site";
+
+import ampGimnasio from "../assets/img/amp-gimnasio.png";
+import ampHabitacion from "../assets/img/amp-habitacion.png";
+import ampHero from "../assets/img/amp-hero.png";
+import ampOficina from "../assets/img/amp-oficina.png";
+import ampQuincho from "../assets/img/amp-quincho.png";
+import paAntes from "../assets/img/pa-antes.png";
+import paBano from "../assets/img/pa-bano.png";
+import paDespues from "../assets/img/pa-despues.png";
+import paHabitacion from "../assets/img/pa-habitacion.png";
+import paVestidor from "../assets/img/pa-vestidor.png";
+import salaExt from "../assets/img/sala-ext.png";
+import salaInt from "../assets/img/sala-int.png";
+
+const migas = [{ name: "Ampliaciones", path: "/ampliaciones" }];
+const faqs = FAQ_GENERAL.filter((f) =>
+  ["¿Cómo se paga", "¿Cuánto cuesta", "¿Cuánto tarda", "¿Se puede construir una planta alta", "¿Puedo seguir viviendo", "¿Hacen llave", "¿El Steel Frame es seguro"].some((p) => f.q.startsWith(p))
+);
+
+const plantaBaja = [
+  { nombre: "Habitaciones", texto: "Un dormitorio más para los chicos, para visitas o para un familiar.", img: ampHabitacion },
+  { nombre: "Oficinas en casa", texto: "Un espacio de trabajo separado de la vida familiar, con buena luz y aislación acústica.", img: ampOficina },
+  { nombre: "Gimnasios", texto: "Entrená en casa en un ambiente propio, ventilado y con vista al jardín.", img: ampGimnasio },
+  { nombre: "Quinchos y livings", texto: "Más lugar para reunirte, integrado al patio con grandes aberturas.", img: ampQuincho },
+];
+
+const servicio = {
+  "@context": "https://schema.org",
+  "@type": "Service",
+  name: "Ampliaciones de viviendas en Steel Frame",
+  serviceType: "Ampliación de vivienda",
+  description:
+    "Diseño y construcción de ampliaciones en planta baja y planta alta con Steel Frame en Córdoba: habitaciones, oficinas, gimnasios, quinchos, vestidores y baños en suite. Presupuesto por etapas y pagos por avance de obra.",
+  provider: { "@id": `${SITE.url}/#empresa` },
+  areaServed: { "@type": "AdministrativeArea", name: "Córdoba, Argentina" },
+  url: `${SITE.url}/ampliaciones`,
+};
+---
+
+<Base
+  title="Ampliaciones en Steel Frame en Córdoba | Hogacor"
+  description="Ampliá tu casa en Córdoba sin obra húmeda: habitaciones, plantas altas, oficinas, quinchos y gimnasios en Steel Frame. Obra más rápida y limpia, presupuesto por etapas y pagos por avance."
+  ogImage={ampHero}
+  breadcrumb={migas}
+  schema={[servicio, faqSchema(faqs)]}
+>
+  <PageHero
+    eyebrow="Ampliaciones de viviendas"
+    title="Ampliá tu casa sin complicaciones"
+    lead={`Diseñamos y construimos ampliaciones en Steel Frame en ${SITE.zona}: rápidas, limpias, con excelente aislación y la terminación de una casa tradicional. ${anios} años y más de ${SITE.obrasTerminadas} obras terminadas nos respaldan.`}
+    img={ampHero}
+    alt="Casa con una nueva habitación construida en Steel Frame en el patio"
+    wa="Hola Hogacor, quiero consultar por una ampliación."
+    migas={migas}
+  />
+
+  <section class="stone" id="planta-baja">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="eyebrow">Planta baja</span>
+        <h2>Más espacio para lo que más importa</h2>
+        <p class="lead">
+          Sumamos ambientes nuevos en el patio o el fondo, conectados a tu casa o independientes. Como es construcción en seco, la obra
+          molesta mucho menos y avanza rápido.
+        </p>
+      </div>
+      <ul class="cards">
+        {
+          plantaBaja.map((p) => (
+            <li>
+              <Image src={p.img} alt={`${p.nombre} construida en Steel Frame`} widths={[320, 520]} sizes="(max-width: 700px) 100vw, 25vw" />
+              <h3>{p.nombre}</h3>
+              <p>{p.texto}</p>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  <section id="planta-alta">
+    <div class="wrap pa">
+      <div class="section-head">
+        <span class="eyebrow">Planta alta</span>
+        <h2>Crecé hacia arriba y conservá tu patio</h2>
+        <p class="lead">
+          El Steel Frame es liviano, por eso muchas casas pueden recibir un primer piso sin refuerzos importantes. Antes de presupuestar
+          verificamos la estructura existente para confirmarlo.
+        </p>
+        <ul class="checks">
+          <li>Dormitorio en suite con vestidor y baño</li>
+          <li>Integración con la estética de la casa existente</li>
+          <li>Seguís viviendo en tu casa durante la obra</li>
+          <li>Aislación térmica y acústica superior</li>
+        </ul>
+      </div>
+      <div class="pa-img">
+        <figure>
+          <Image src={paAntes} alt="Casa de una planta antes de la ampliación" widths={[360, 560]} sizes="(max-width: 900px) 50vw, 25vw" />
+          <figcaption>Antes</figcaption>
+        </figure>
+        <figure>
+          <Image src={paDespues} alt="Casa con nueva habitación en planta alta" widths={[360, 560]} sizes="(max-width: 900px) 50vw, 25vw" />
+          <figcaption>Después</figcaption>
+        </figure>
+      </div>
+    </div>
+    <div class="wrap trio">
+      {
+        [
+          { img: paHabitacion, t: "Habitación", d: "Tu nuevo espacio, con toda la comodidad." },
+          { img: paVestidor, t: "Vestidor", d: "Organización y estilo." },
+          { img: paBano, t: "Baño en suite", d: "Más privacidad para tu familia." },
+        ].map((x) => (
+          <figure>
+            <Image src={x.img} alt={`${x.t} en ampliación de planta alta`} widths={[360, 560]} sizes="(max-width: 700px) 100vw, 33vw" />
+            <figcaption>
+              <strong>{x.t}</strong> {x.d}
+            </figcaption>
+          </figure>
+        ))
+      }
+    </div>
+    <p class="wrap nota-render">Imágenes ilustrativas.</p>
+  </section>
+
+  <section id="oficinas">
+    <div class="wrap ofi">
+      <figure>
+        <Image src={salaExt} alt="Sala de reuniones construida en el fondo de un terreno, vista desde el patio" widths={[520, 820]} sizes="(max-width: 900px) 100vw, 55vw" />
+      </figure>
+      <div class="section-head">
+        <span class="eyebrow">Espacios de trabajo</span>
+        <h2>Oficinas y salas de reuniones en tu terreno</h2>
+        <p class="lead">
+          Un espacio profesional a pasos de tu casa, con grandes aberturas de aluminio con DVH, cielorraso con iluminación perimetral y
+          climatización eficiente gracias a la aislación del sistema.
+        </p>
+        <Image src={salaInt} alt="Interior de sala de reuniones con mesa para doce personas" widths={[360, 560]} sizes="(max-width: 900px) 100vw, 30vw" class="ofi-int" />
+      </div>
+    </div>
+  </section>
+
+  <Compromisos title="Tu ampliación, con reglas claras" />
+  <Proceso />
+  <Faq faqs={faqs} title="Preguntas sobre ampliaciones" />
+  <Contacto proyecto="Ampliación en planta baja" titulo="Contanos qué querés sumar a tu casa" />
+</Base>
+
+<style>
+  .cards {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 18px;
+  }
+  .cards li {
+    display: grid;
+    gap: 8px;
+    align-content: start;
+  }
+  .cards img {
+    width: 100%;
+    aspect-ratio: 4 / 3.2;
+    object-fit: cover;
+    border-radius: 12px;
+    margin-bottom: 8px;
+  }
+  .cards p {
+    color: var(--muted);
+    font-size: 0.98rem;
+  }
+  @media (max-width: 960px) {
+    .cards {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+  @media (max-width: 560px) {
+    .cards {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .pa {
+    display: grid;
+    grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+    gap: clamp(32px, 5vw, 64px);
+    align-items: center;
+  }
+  .pa .section-head {
+    margin: 0;
+  }
+  .pa .checks {
+    margin-top: 8px;
+  }
+  .pa-img {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+  }
+  .pa-img figure,
+  .trio figure {
+    margin: 0;
+    position: relative;
+  }
+  .pa-img img {
+    width: 100%;
+    aspect-ratio: 3 / 3.6;
+    object-fit: cover;
+    border-radius: 12px;
+  }
+  .pa-img figcaption {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    background: var(--ink);
+    color: #fff;
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 6px 10px;
+    border-radius: 6px;
+  }
+  .pa-img figure:last-child figcaption {
+    background: var(--accent);
+    color: var(--ink);
+  }
+  .trio {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 14px;
+    margin-top: 40px;
+    margin-bottom: 12px;
+  }
+  .trio img {
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+    border-radius: 12px;
+  }
+  .trio figcaption {
+    margin-top: 10px;
+    color: var(--muted);
+    font-size: 0.95rem;
+  }
+  .trio strong {
+    color: var(--ink);
+    display: block;
+  }
+  @media (max-width: 900px) {
+    .pa {
+      grid-template-columns: 1fr;
+    }
+  }
+  @media (max-width: 700px) {
+    .trio {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .ofi {
+    display: grid;
+    grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+    gap: clamp(32px, 5vw, 64px);
+    align-items: center;
+  }
+  .ofi figure {
+    margin: 0;
+  }
+  .ofi figure img {
+    width: 100%;
+    aspect-ratio: 16 / 10;
+    object-fit: cover;
+    border-radius: var(--radius);
+  }
+  .ofi .section-head {
+    margin: 0;
+  }
+  :global(.ofi-int) {
+    width: 100%;
+    aspect-ratio: 16 / 8;
+    object-fit: cover;
+    border-radius: 12px;
+    margin-top: 8px;
+  }
+  @media (max-width: 900px) {
+    .ofi {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

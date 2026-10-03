@@ -1,0 +1,261 @@
+---
+import { Image } from "astro:assets";
+import Contacto from "../components/Contacto.astro";
+import Faq from "../components/Faq.astro";
+import Icon from "../components/Icon.astro";
+import PageHero from "../components/PageHero.astro";
+import { FAQ_COVACHA, faqSchema } from "../content";
+import Base from "../layouts/Base.astro";
+import { COVACHAS, SITE, waLink } from "../site";
+
+import covBano from "../assets/img/cov-bano.png";
+import covCocina from "../assets/img/cov-cocina.png";
+import covDormitorio from "../assets/img/cov-dormitorio.png";
+import covHero from "../assets/img/cov-hero.png";
+import miniFrente from "../assets/img/mini-frente.png";
+import miniHero from "../assets/img/mini-hero.png";
+import miniLateral from "../assets/img/mini-lateral.png";
+import miniSierras from "../assets/img/mini-sierras.png";
+
+const migas = [{ name: "Covacha", path: "/covacha" }];
+const IMGS = {
+  covacha: { hero: covHero, galeria: [covDormitorio, covCocina, covBano], alts: ["Dormitorio", "Kitchenette equipada", "Baño privado"] },
+  "covacha-mini": { hero: miniHero, galeria: [miniFrente, miniLateral, miniSierras], alts: ["Vista de frente", "Vista lateral", "Instalada en las sierras"] },
+} as const;
+
+const usos = [
+  { t: "Escapadas de fin de semana", d: "Tu refugio en las sierras, siempre listo." },
+  { t: "Recibir visitas", d: "Un espacio privado y cómodo para la familia." },
+  { t: "Tu primer espacio independiente", d: "Empezá tu historia en tu propio lugar." },
+  { t: "Oficina o estudio", d: "Trabajá tranquilo sin salir de casa." },
+  { t: "Alojamiento turístico", d: "Una oportunidad de inversión con renta." },
+];
+
+const caracteristicas = [
+  { icon: "layers", t: "Estructura híbrida metal + Steel Frame" },
+  { icon: "thermo", t: "Aislación térmica y acústica" },
+  { icon: "clock", t: "Instalación rápida" },
+  { icon: "leaf", t: "Bajo impacto ambiental" },
+  { icon: "truck", t: "Transporte y montaje" },
+  { icon: "shield", t: "Resistente y duradera" },
+] as const;
+
+const productos = COVACHAS.map((c) => ({
+  "@context": "https://schema.org",
+  "@type": "Product",
+  name: `${c.nombre} by ${SITE.nombre}`,
+  description: `Módulo habitable compacto de ${c.m2} m² (${c.medidas}) en Steel Frame: ${c.incluye.join(", ").toLowerCase()}.`,
+  brand: { "@type": "Brand", name: SITE.nombre },
+  category: "Módulo habitable compacto",
+  url: `${SITE.url}/covacha#${c.id}`,
+  additionalProperty: [
+    { "@type": "PropertyValue", name: "Superficie", value: c.m2, unitCode: "MTK" },
+    { "@type": "PropertyValue", name: "Medidas", value: c.medidas },
+  ],
+}));
+---
+
+<Base
+  title="Covacha: módulo habitable de 12 y 18 m² | Hogacor"
+  description="Covacha es el módulo habitable de Hogacor: dormitorio, baño y kitchenette en 18 m², o versión Mini de 12 m². Ideal para escapadas en las sierras, visitas, oficina o alquiler turístico en Córdoba."
+  ogImage={covHero}
+  breadcrumb={migas}
+  schema={[...productos, faqSchema(FAQ_COVACHA)]}
+>
+  <PageHero
+    eyebrow="Covacha · Tu espacio, donde quieras"
+    title="Pequeña en tamaño, gigante en posibilidades"
+    lead="Un módulo habitable compacto y completo para vivir grandes momentos: dormitorio, baño privado y kitchenette, con aislación térmica y acústica. Lo fabricamos, lo trasladamos y lo montamos en tu terreno."
+    img={covHero}
+    alt="Covacha, módulo habitable de madera y negro con deck, al atardecer en las sierras"
+    wa="Hola Hogacor, quiero consultar por la Covacha."
+    migas={migas}
+  />
+
+  <section class="stone">
+    <div class="wrap">
+      <ul class="caract">
+        {
+          caracteristicas.map((c) => (
+            <li>
+              <Icon name={c.icon} size={28} />
+              <span>{c.t}</span>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  {
+    COVACHAS.map((c, i) => (
+      <section id={c.id} class:list={[i % 2 === 1 && "stone"]}>
+        <div class="wrap cov">
+          <div class="cov-text">
+            <span class="eyebrow">{c.nombre}</span>
+            <h2>{i === 0 ? "Todo lo esencial en un solo lugar" : "Lo esencial, bien diseñado"}</h2>
+            <p class="medida">
+              <strong>{c.m2} m²</strong> · {c.medidas}
+            </p>
+            <ul class="checks">
+              {c.incluye.map((x) => (
+                <li>{x}</li>
+              ))}
+            </ul>
+            <p class="lead">También podemos diseñarla a tu medida.</p>
+            <a class="btn btn-dark" href={waLink(`Hola Hogacor, quiero consultar por la ${c.nombre}.`)} target="_blank" rel="noopener">
+              Consultar por la {c.nombre} <Icon name="arrow" />
+            </a>
+          </div>
+          <div class="cov-img">
+            <Image src={IMGS[c.id].hero} alt={`${c.nombre} de ${c.m2} m²`} widths={[560, 860]} sizes="(max-width: 900px) 100vw, 55vw" class="cov-main" />
+            <div class="cov-gal">
+              {IMGS[c.id].galeria.map((img, j) => (
+                <Image src={img} alt={`${c.nombre}: ${IMGS[c.id].alts[j]}`} widths={[260, 420]} sizes="(max-width: 900px) 33vw, 18vw" />
+              ))}
+            </div>
+            <p class="nota-render">Imágenes ilustrativas.</p>
+          </div>
+        </div>
+      </section>
+    ))
+  }
+
+  <section class="dark">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="eyebrow">Ideal para</span>
+        <h2>¿Y vos, para qué usarías tu Covacha?</h2>
+      </div>
+      <ul class="usos">
+        {
+          usos.map((u) => (
+            <li>
+              <h3>{u.t}</h3>
+              <p>{u.d}</p>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  <Faq faqs={FAQ_COVACHA} title="Preguntas sobre la Covacha" />
+  <Contacto proyecto="Covacha / Covacha Mini" titulo="Consultá por tu Covacha" />
+</Base>
+
+<style>
+  .caract {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+    gap: 20px;
+  }
+  .caract li {
+    display: grid;
+    gap: 10px;
+    justify-items: center;
+    text-align: center;
+    font-weight: 500;
+    font-size: 0.95rem;
+    color: var(--accent-ink);
+  }
+  .caract span {
+    color: var(--ink);
+  }
+  @media (max-width: 900px) {
+    .caract {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+  @media (max-width: 520px) {
+    .caract {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+  .cov {
+    display: grid;
+    grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr);
+    gap: clamp(32px, 5vw, 64px);
+    align-items: center;
+  }
+  .cov-text {
+    display: grid;
+    gap: 16px;
+    justify-items: start;
+  }
+  .medida {
+    font-size: 1.15rem;
+    color: var(--muted);
+  }
+  .medida strong {
+    color: var(--ink);
+    font-size: 1.6rem;
+    font-stretch: 115%;
+  }
+  .cov-img {
+    display: grid;
+    gap: 12px;
+  }
+  :global(.cov-main) {
+    width: 100%;
+    aspect-ratio: 16 / 10;
+    object-fit: cover;
+    border-radius: var(--radius);
+  }
+  .cov-gal {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 12px;
+  }
+  .cov-gal img {
+    width: 100%;
+    aspect-ratio: 1;
+    object-fit: cover;
+    border-radius: 10px;
+  }
+  @media (max-width: 900px) {
+    .cov {
+      grid-template-columns: 1fr;
+    }
+  }
+  .usos {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: 0;
+    border-top: 1px solid #3a3632;
+  }
+  .usos li {
+    display: grid;
+    gap: 8px;
+    align-content: start;
+    padding: 28px 20px 8px 0;
+  }
+  .usos li + li {
+    padding-left: 20px;
+    border-left: 1px solid #3a3632;
+  }
+  .usos p {
+    color: #b9b2a9;
+    font-size: 0.97rem;
+  }
+  @media (max-width: 900px) {
+    .usos {
+      grid-template-columns: 1fr 1fr;
+    }
+    .usos li + li {
+      padding-left: 0;
+      border-left: 0;
+    }
+  }
+  @media (max-width: 520px) {
+    .usos {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

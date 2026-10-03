@@ -1,0 +1,80 @@
+---
+import { COMPROMISOS } from "../content";
+import Icon from "./Icon.astro";
+
+const ICONOS = ["wallet", "file", "camera", "eye"] as const;
+interface Props {
+  title?: string;
+}
+const { title = "Lo que queda por escrito antes de poner el primer perfil" } = Astro.props;
+---
+
+<section class="stone" id="garantias">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow">Tranquilidad</span>
+      <h2>{title}</h2>
+      <p class="lead">
+        Contratar una obra es una decisión grande. Por eso trabajamos con reglas claras desde el primer día: sabés qué se hace, cuánto
+        cuesta cada parte y cuándo se paga.
+      </p>
+    </div>
+    <ul class="grid">
+      {
+        COMPROMISOS.map((c, i) => (
+          <li>
+            <span class="ico">
+              <Icon name={ICONOS[i]} size={26} />
+            </span>
+            <h3>{c.titulo}</h3>
+            <p>{c.texto}</p>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</section>
+
+<style>
+  .grid {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 16px;
+  }
+  li {
+    display: grid;
+    align-content: start;
+    gap: 12px;
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 28px 24px;
+  }
+  .ico {
+    display: grid;
+    place-items: center;
+    width: 52px;
+    height: 52px;
+    border-radius: 12px;
+    background: var(--ink);
+    color: var(--accent);
+    margin-bottom: 6px;
+  }
+  li p {
+    color: var(--muted);
+    font-size: 0.98rem;
+  }
+  @media (max-width: 1000px) {
+    .grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+  @media (max-width: 560px) {
+    .grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

@@ -1,0 +1,80 @@
+---
+import { PROCESO } from "../content";
+---
+
+<section id="como-trabajamos" class="dark">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow">Cómo trabajamos</span>
+      <h2>Un proceso claro, de la primera charla a la entrega</h2>
+      <p class="lead">Cada paso tiene un resultado concreto que podés revisar antes de seguir. Sin sorpresas a mitad de obra.</p>
+    </div>
+    <ol class="steps">
+      {
+        PROCESO.map((p, i) => (
+          <li>
+            <span class="n">{String(i + 1).padStart(2, "0")}</span>
+            <h3>{p.titulo}</h3>
+            <p>{p.texto}</p>
+          </li>
+        ))
+      }
+    </ol>
+  </div>
+</section>
+
+<style>
+  .steps {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0;
+    border-top: 1px solid #3a3632;
+  }
+  li {
+    display: grid;
+    align-content: start;
+    gap: 10px;
+    padding: 32px 28px 36px 0;
+    border-bottom: 1px solid #3a3632;
+  }
+  li:not(:nth-child(3n + 1)) {
+    padding-left: 28px;
+    border-left: 1px solid #3a3632;
+  }
+  .n {
+    font-stretch: 120%;
+    font-weight: 700;
+    font-size: 0.95rem;
+    color: var(--accent);
+    letter-spacing: 0.05em;
+  }
+  li p {
+    color: #b9b2a9;
+    font-size: 0.98rem;
+  }
+  @media (max-width: 900px) {
+    .steps {
+      grid-template-columns: 1fr 1fr;
+    }
+    li:not(:nth-child(3n + 1)) {
+      padding-left: 0;
+      border-left: 0;
+    }
+    li:nth-child(2n) {
+      padding-left: 24px;
+      border-left: 1px solid #3a3632;
+    }
+  }
+  @media (max-width: 560px) {
+    .steps {
+      grid-template-columns: 1fr;
+    }
+    li:nth-child(2n) {
+      padding-left: 0;
+      border-left: 0;
+    }
+  }
+</style>

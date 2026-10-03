@@ -1,0 +1,295 @@
+---
+import { Image } from "astro:assets";
+import Compromisos from "../components/Compromisos.astro";
+import Contacto from "../components/Contacto.astro";
+import Faq from "../components/Faq.astro";
+import Icon from "../components/Icon.astro";
+import PageHero from "../components/PageHero.astro";
+import { FAQ_MODULOS, faqSchema } from "../content";
+import Base from "../layouts/Base.astro";
+import { MODULOS, SITE, waLink } from "../site";
+
+import h1Bano from "../assets/img/h1-bano.png";
+import h1Dormitorio from "../assets/img/h1-dormitorio.png";
+import h1Hero from "../assets/img/h1-hero.png";
+import h1Planta from "../assets/img/h1-planta.png";
+import h2Hero from "../assets/img/h2-hero.png";
+import h2Living from "../assets/img/h2-living.png";
+import h2Planta from "../assets/img/h2-planta.png";
+import h3Hero from "../assets/img/h3-hero.png";
+import h3Living from "../assets/img/h3-living.png";
+import h3Planta from "../assets/img/h3-planta.png";
+
+const migas = [{ name: "Módulos habitacionales", path: "/modulos" }];
+const IMGS = {
+  h1: { hero: h1Hero, planta: h1Planta, interiores: [h1Dormitorio, h1Bano] },
+  h2: { hero: h2Hero, planta: h2Planta, interiores: [h2Living] },
+  h3: { hero: h3Hero, planta: h3Planta, interiores: [h3Living] },
+} as const;
+
+const productos = MODULOS.map((m) => ({
+  "@context": "https://schema.org",
+  "@type": "Product",
+  name: `${SITE.nombre} ${m.nombre}`,
+  description: `Módulo habitacional en Steel Frame de ${m.m2} m² (${m.medidas}): ${m.resumen}. ${m.usos}`,
+  brand: { "@type": "Brand", name: SITE.nombre },
+  category: "Módulo habitacional",
+  url: `${SITE.url}/modulos#${m.id}`,
+  additionalProperty: [
+    { "@type": "PropertyValue", name: "Superficie", value: m.m2, unitCode: "MTK" },
+    { "@type": "PropertyValue", name: "Medidas exteriores", value: m.medidas },
+    { "@type": "PropertyValue", name: "Sistema constructivo", value: "Estructura metálica + Steel Frame" },
+  ],
+}));
+---
+
+<Base
+  title="Módulos habitacionales en Córdoba (18 a 30 m²) | Hogacor"
+  description="Módulos habitacionales en Steel Frame en Córdoba: H1 (18 m², habitación + baño), H2 (24 m², habitación, cocina-living y baño) y H3 (30 m², dos habitaciones). Rápida instalación, personalizables."
+  ogImage={h2Hero}
+  breadcrumb={migas}
+  schema={[...productos, faqSchema(FAQ_MODULOS)]}
+>
+  <PageHero
+    eyebrow="Módulos habitacionales"
+    title="Espacios completos, listos para vivir"
+    lead="Tres modelos base de 18, 24 y 30 m² con dormitorio, baño y cocina-living, construidos con estructura metálica y Steel Frame. Ideales para sumar una vivienda independiente en tu terreno, recibir a la familia o generar una renta."
+    img={h3Hero}
+    alt="Módulo habitacional H3 de 30 m² con dos dormitorios y cocina-living"
+    wa="Hola Hogacor, quiero consultar por los módulos habitacionales."
+    migas={migas}
+  />
+
+  <section class="stone">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="eyebrow">Modelos</span>
+        <h2>Elegí el módulo que se adapta a tu proyecto</h2>
+        <p class="lead">Todos se pueden personalizar en distribución, medidas, aberturas y terminaciones.</p>
+      </div>
+      <div class="tabla" role="table" aria-label="Comparación de módulos">
+        <div role="row" class="th">
+          <span role="columnheader">Modelo</span><span role="columnheader">Superficie</span><span role="columnheader">Medidas</span><span
+            role="columnheader">Ambientes</span
+          >
+        </div>
+        {
+          MODULOS.map((m) => (
+            <a role="row" href={`#${m.id}`}>
+              <span role="cell">
+                <strong>{m.nombre}</strong>
+              </span>
+              <span role="cell">{m.m2} m²</span>
+              <span role="cell">{m.medidas}</span>
+              <span role="cell">{m.resumen}</span>
+            </a>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  {
+    MODULOS.map((m, i) => (
+      <section id={m.id} class:list={["modulo", i % 2 === 1 && "stone"]}>
+        <div class="wrap">
+          <div class="mod-head">
+            <div>
+              <span class="eyebrow">{m.nombre}</span>
+              <h2>{m.resumen}</h2>
+            </div>
+            <ul class="specs">
+              <li>
+                <Icon name="area" /> <strong>{m.m2} m²</strong> superficie total
+              </li>
+              <li>
+                <Icon name="ruler" /> <strong>{m.medidas}</strong> medidas exteriores
+              </li>
+            </ul>
+          </div>
+          <Image
+            class="mod-hero"
+            src={IMGS[m.id].hero}
+            alt={`${m.nombre}: ${m.resumen}, vista exterior`}
+            widths={[640, 960, 1280]}
+            sizes="(max-width: 1200px) 100vw, 1180px"
+          />
+          <div class="mod-body">
+            <div class="mod-text">
+              <h3>Qué incluye</h3>
+              <ul class="checks">
+                {m.ambientes.map((a) => (
+                  <li>{a}</li>
+                ))}
+                <li>Aislación térmica y acústica</li>
+                <li>Aberturas de aluminio</li>
+              </ul>
+              <p>
+                <strong>Ideal para:</strong> {m.usos}
+              </p>
+              <a class="btn btn-dark" href={waLink(`Hola Hogacor, quiero consultar por el ${m.nombre}.`)} target="_blank" rel="noopener">
+                Consultar por el {m.nombre} <Icon name="arrow" />
+              </a>
+            </div>
+            <figure class="planta">
+              <Image src={IMGS[m.id].planta} alt={`Planta del ${m.nombre} de ${m.medidas}`} widths={[480, 760]} sizes="(max-width: 900px) 100vw, 50vw" />
+              <figcaption>Planta {m.nombre} · {m.medidas}</figcaption>
+            </figure>
+            <div class="interiores">
+              {IMGS[m.id].interiores.map((img) => (
+                <Image src={img} alt={`Interior del ${m.nombre}`} widths={[360, 560]} sizes="(max-width: 900px) 50vw, 25vw" />
+              ))}
+            </div>
+          </div>
+          <p class="nota-render">Imágenes ilustrativas. Medidas y terminaciones finales según proyecto.</p>
+        </div>
+      </section>
+    ))
+  }
+
+  <Compromisos title="Tu módulo, con reglas claras" />
+  <Faq faqs={FAQ_MODULOS} title="Preguntas sobre los módulos" />
+  <Contacto proyecto="Módulo habitacional H1 / H2 / H3" titulo="Consultá por tu módulo" />
+</Base>
+
+<style>
+  .tabla {
+    display: grid;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    overflow: hidden;
+    background: var(--card);
+  }
+  .tabla > * {
+    display: grid;
+    grid-template-columns: 1.1fr 0.8fr 1fr 2fr;
+    gap: 16px;
+    padding: 18px 24px;
+    text-decoration: none;
+    align-items: center;
+  }
+  .tabla a {
+    border-top: 1px solid var(--line);
+    transition: background-color 0.15s;
+  }
+  .tabla a:hover {
+    background: var(--paper);
+  }
+  .th {
+    font-size: 0.8rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    background: var(--paper);
+  }
+  @media (max-width: 700px) {
+    .tabla > * {
+      grid-template-columns: 1fr 1fr;
+      gap: 4px 16px;
+    }
+    .th {
+      display: none !important;
+    }
+    .tabla a span:last-child {
+      grid-column: 1 / -1;
+      color: var(--muted);
+    }
+  }
+
+  .mod-head {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: end;
+    gap: 20px 40px;
+    margin-bottom: 28px;
+  }
+  .mod-head > div {
+    display: grid;
+    gap: 12px;
+  }
+  .specs {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+  .specs li {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 16px;
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    background: var(--card);
+    color: var(--muted);
+    font-size: 0.95rem;
+  }
+  .specs :global(svg) {
+    color: var(--accent-ink);
+  }
+  .specs strong {
+    color: var(--ink);
+  }
+  :global(.mod-hero) {
+    width: 100%;
+    aspect-ratio: 21 / 8;
+    object-fit: cover;
+    border-radius: var(--radius);
+  }
+  .mod-body {
+    display: grid;
+    grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
+    gap: 28px 48px;
+    margin: 36px 0 14px;
+    align-items: start;
+  }
+  .mod-text {
+    display: grid;
+    gap: 16px;
+    justify-items: start;
+  }
+  .mod-text p {
+    color: var(--muted);
+  }
+  .mod-text strong {
+    color: var(--ink);
+  }
+  .planta {
+    margin: 0;
+    display: grid;
+    gap: 8px;
+  }
+  .planta img {
+    width: 100%;
+    border-radius: 12px;
+    background: #fff;
+  }
+  .planta figcaption {
+    font-size: 0.88rem;
+    color: var(--muted);
+  }
+  .interiores {
+    grid-column: 1 / -1;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 14px;
+  }
+  .interiores img {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
+    border-radius: 12px;
+  }
+  @media (max-width: 900px) {
+    .mod-body {
+      grid-template-columns: 1fr;
+    }
+    :global(.mod-hero) {
+      aspect-ratio: 16 / 9;
+    }
+  }
+</style>

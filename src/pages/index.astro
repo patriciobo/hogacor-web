@@ -1,0 +1,507 @@
+---
+import { Image } from "astro:assets";
+import Compromisos from "../components/Compromisos.astro";
+import Contacto from "../components/Contacto.astro";
+import Faq from "../components/Faq.astro";
+import Icon from "../components/Icon.astro";
+import Proceso from "../components/Proceso.astro";
+import { FAQ_GENERAL, STEEL_FRAME, faqSchema } from "../content";
+import Base from "../layouts/Base.astro";
+import { SITE, anios, waLink } from "../site";
+
+import ampHabitacion from "../assets/img/amp-habitacion.png";
+import ampHero from "../assets/img/amp-hero.png";
+import ampOficina from "../assets/img/amp-oficina.png";
+import ampGimnasio from "../assets/img/amp-gimnasio.png";
+import ampQuincho from "../assets/img/amp-quincho.png";
+import covHero from "../assets/img/cov-hero.png";
+import h2Hero from "../assets/img/h2-hero.png";
+import paAntes from "../assets/img/pa-antes.png";
+import paBano from "../assets/img/pa-bano.png";
+import paDespues from "../assets/img/pa-despues.png";
+import paVestidor from "../assets/img/pa-vestidor.png";
+
+const servicios = [
+  {
+    titulo: "Ampliaciones en planta baja",
+    texto: "Habitaciones, oficinas, quinchos y gimnasios que se integran a tu casa sin obra húmeda.",
+    href: "/ampliaciones",
+    img: ampHero,
+  },
+  {
+    titulo: "Ampliaciones en planta alta",
+    texto: "Sumá un piso con dormitorio, vestidor y baño en suite sobre tu casa existente.",
+    href: "/ampliaciones#planta-alta",
+    img: paDespues,
+  },
+  {
+    titulo: "Módulos habitacionales",
+    texto: "Modelos H1, H2 y H3 de 18 a 30 m², listos para vivir, alquilar o recibir visitas.",
+    href: "/modulos",
+    img: h2Hero,
+  },
+  {
+    titulo: "Covacha",
+    texto: "Nuestro módulo compacto de 12 y 18 m² para escapadas, oficina o alquiler turístico.",
+    href: "/covacha",
+    img: covHero,
+  },
+];
+
+const espacios = [
+  { nombre: "Habitaciones", img: ampHabitacion },
+  { nombre: "Oficinas", img: ampOficina },
+  { nombre: "Gimnasios", img: ampGimnasio },
+  { nombre: "Quinchos y livings", img: ampQuincho },
+  { nombre: "Vestidores", img: paVestidor },
+  { nombre: "Baños en suite", img: paBano },
+];
+
+const cifras = [
+  { valor: `+${SITE.obrasTerminadas}`, label: "obras terminadas" },
+  { valor: String(anios), label: "años construyendo en Córdoba" },
+  { valor: "Por etapas", label: "pagás a medida que avanza la obra" },
+  { valor: "Sin cargo", label: "visita y presupuesto detallado" },
+];
+---
+
+<Base
+  title="Constructora en Córdoba: ampliaciones en Steel Frame | Hogacor"
+  description={`Constructora en Córdoba con ${anios} años y +${SITE.obrasTerminadas} obras terminadas. Ampliaciones, plantas altas y módulos en Steel Frame. Pagás por avance de obra.`}
+  schema={[faqSchema(FAQ_GENERAL)]}
+>
+  <section class="hero">
+    <div class="wrap hero-grid">
+      <div class="hero-copy">
+        <span class="eyebrow">Constructora en {SITE.ciudad} · desde {SITE.fundacion}</span>
+        <h1>Ampliamos y construimos tu casa con reglas claras desde el primer día</h1>
+        <p class="lead">
+          Ampliaciones, plantas altas y módulos habitacionales en Steel Frame. Presupuesto detallado por etapas, contrato firmado y pagos
+          atados al avance real de la obra.
+        </p>
+        <div class="cta-row">
+          <a class="btn btn-primary" href={waLink("Hola Hogacor, quiero pedir un presupuesto.")} target="_blank" rel="noopener">
+            <Icon name="whatsapp" /> Pedí tu presupuesto
+          </a>
+          <a class="btn btn-ghost" href="#como-trabajamos">Cómo trabajamos <Icon name="arrow" /></a>
+        </div>
+      </div>
+      <figure class="hero-img">
+        <Image
+          src={paDespues}
+          alt="Vivienda ampliada en planta alta con Steel Frame, con dormitorio y balcón"
+          widths={[480, 720, 980]}
+          sizes="(max-width: 900px) 100vw, 50vw"
+          loading="eager"
+          fetchpriority="high"
+        />
+        <figcaption class="nota-render">Imagen ilustrativa de una ampliación en planta alta.</figcaption>
+      </figure>
+    </div>
+    <div class="wrap">
+      <dl class="cifras">
+        {
+          cifras.map((c) => (
+            <div>
+              <dt>{c.label}</dt>
+              <dd>{c.valor}</dd>
+            </div>
+          ))
+        }
+      </dl>
+    </div>
+  </section>
+
+  <Compromisos />
+
+  <section id="servicios">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="eyebrow">Qué hacemos</span>
+        <h2>Más espacio para tu casa, sin las complicaciones de una obra tradicional</h2>
+        <p class="lead">
+          Diseñamos y construimos con Steel Frame: estructura de acero galvanizado, aislación térmica y acústica y terminaciones de calidad.
+          Llave en mano o solo la parte que necesites.
+        </p>
+      </div>
+      <ul class="servicios">
+        {
+          servicios.map((s) => (
+            <li>
+              <a href={s.href}>
+                <Image src={s.img} alt="" widths={[420, 640]} sizes="(max-width: 700px) 100vw, 50vw" />
+                <div>
+                  <h3>{s.titulo}</h3>
+                  <p>{s.texto}</p>
+                  <span class="mas">
+                    Ver más <Icon name="arrow" size={18} />
+                  </span>
+                </div>
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  <section class="stone espacios-sec">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="eyebrow">Espacios a tu medida</span>
+        <h2>El ambiente que le falta a tu casa</h2>
+        <p class="lead">Cada proyecto se diseña para tu terreno, tu rutina y tu presupuesto.</p>
+      </div>
+      <ul class="espacios">
+        {
+          espacios.map((e) => (
+            <li>
+              <Image src={e.img} alt={`${e.nombre} construidos en Steel Frame`} widths={[300, 460]} sizes="(max-width: 700px) 50vw, 33vw" />
+              <span>{e.nombre}</span>
+            </li>
+          ))
+        }
+      </ul>
+      <p class="nota-render">Imágenes ilustrativas.</p>
+    </div>
+  </section>
+
+  <Proceso />
+
+  <section id="steel-frame">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="eyebrow">Steel Frame</span>
+        <h2>Por qué construimos con Steel Frame</h2>
+        <p class="lead">
+          Es el sistema con el que se construyen millones de viviendas en el mundo. En Argentina es construcción tradicional desde 2018 y
+          tiene ventajas concretas para ampliar una casa habitada.
+        </p>
+      </div>
+      <ul class="beneficios">
+        {
+          STEEL_FRAME.map((b, i) => (
+            <li>
+              <Icon name={(["clock", "thermo", "home", "layers", "shield", "ruler"] as const)[i]} size={28} />
+              <h3>{b.titulo}</h3>
+              <p>{b.texto}</p>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  <section class="stone">
+    <div class="wrap antes-despues">
+      <div class="section-head">
+        <span class="eyebrow">Tu casa evoluciona con vos</span>
+        <h2>Se agrandó la familia: es momento de más espacio</h2>
+        <p class="lead">
+          Una planta alta en Steel Frame suma dormitorio, vestidor y baño en suite sin mudarte ni demoler. La casa existente se mantiene y la
+          ampliación se integra a su estética.
+        </p>
+        <a class="btn btn-dark" href="/ampliaciones#planta-alta">Ampliaciones en planta alta <Icon name="arrow" /></a>
+      </div>
+      <div class="ad">
+        <figure>
+          <Image src={paAntes} alt="Casa de una planta antes de la ampliación" widths={[400, 600]} sizes="(max-width: 900px) 50vw, 25vw" />
+          <figcaption>Antes</figcaption>
+        </figure>
+        <figure>
+          <Image src={paDespues} alt="La misma casa con una nueva habitación en planta alta" widths={[400, 600]} sizes="(max-width: 900px) 50vw, 25vw" />
+          <figcaption>Después</figcaption>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <section class="referencias">
+    <div class="wrap ref-box">
+      <div>
+        <span class="eyebrow">Referencias reales</span>
+        <h2>No te pedimos que nos creas: conocé nuestras obras</h2>
+      </div>
+      <div class="ref-copy">
+        <p class="lead">
+          En {anios} años terminamos más de {SITE.obrasTerminadas} obras en {SITE.ciudad}. Antes de firmar, podés hablar con clientes que ya
+          construyeron con nosotros y ver trabajos terminados. Es la mejor forma de saber cómo trabajamos.
+        </p>
+        <a class="btn btn-primary" href={waLink("Hola Hogacor, me gustaría conocer obras terminadas y referencias de clientes.")} target="_blank" rel="noopener">
+          Pedí referencias <Icon name="arrow" />
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <Faq faqs={FAQ_GENERAL} />
+  <Contacto />
+</Base>
+
+<style>
+  .hero {
+    padding-block: clamp(40px, 6vw, 80px) 0;
+  }
+  .hero-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr);
+    gap: clamp(32px, 5vw, 64px);
+    align-items: center;
+  }
+  .hero-copy {
+    display: grid;
+    gap: 22px;
+  }
+  .cta-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 8px;
+  }
+  .hero-img {
+    margin: 0;
+    display: grid;
+    gap: 8px;
+  }
+  .hero-img img {
+    width: 100%;
+    aspect-ratio: 4 / 3.4;
+    object-fit: cover;
+    border-radius: var(--radius);
+  }
+  .cifras {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    margin: clamp(40px, 6vw, 72px) 0 0;
+    border-top: 1px solid var(--line);
+  }
+  .cifras div {
+    display: flex;
+    flex-direction: column-reverse;
+    gap: 4px;
+    padding: 26px 24px 30px 0;
+  }
+  .cifras div + div {
+    padding-left: 24px;
+    border-left: 1px solid var(--line);
+  }
+  .cifras dd {
+    margin: 0;
+    font-size: clamp(1.6rem, 3vw, 2.3rem);
+    font-weight: 700;
+    font-stretch: 115%;
+    line-height: 1.05;
+  }
+  .cifras dt {
+    color: var(--muted);
+    font-size: 0.95rem;
+  }
+  @media (max-width: 900px) {
+    .hero-grid {
+      grid-template-columns: 1fr;
+    }
+    .cifras {
+      grid-template-columns: 1fr 1fr;
+    }
+    .cifras div:nth-child(3) {
+      padding-left: 0;
+      border-left: 0;
+    }
+    .cifras div:nth-child(n + 3) {
+      border-top: 1px solid var(--line);
+    }
+  }
+
+  .servicios {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 20px;
+  }
+  .servicios a {
+    display: grid;
+    height: 100%;
+    text-decoration: none;
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    overflow: hidden;
+    transition:
+      border-color 0.15s,
+      box-shadow 0.15s;
+  }
+  .servicios a:hover {
+    border-color: #cfc8bf;
+    box-shadow: 0 14px 34px rgb(0 0 0 / 0.07);
+  }
+  .servicios img {
+    width: 100%;
+    aspect-ratio: 16 / 8;
+    object-fit: cover;
+  }
+  .servicios div {
+    display: grid;
+    gap: 8px;
+    padding: 24px 26px 26px;
+  }
+  .servicios p {
+    color: var(--muted);
+  }
+  .mas {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: 6px;
+    font-weight: 600;
+    color: var(--accent-ink);
+  }
+  @media (max-width: 700px) {
+    .servicios {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .espacios {
+    list-style: none;
+    margin: 0 0 14px;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 14px;
+  }
+  .espacios li {
+    position: relative;
+    border-radius: 12px;
+    overflow: hidden;
+  }
+  .espacios img {
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+  }
+  .espacios span {
+    position: absolute;
+    left: 12px;
+    bottom: 12px;
+    background: var(--ink);
+    color: #fff;
+    font-weight: 600;
+    font-size: 0.92rem;
+    padding: 6px 12px;
+    border-radius: 8px;
+  }
+  @media (max-width: 700px) {
+    .espacios {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  .beneficios {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 40px 36px;
+  }
+  .beneficios li {
+    display: grid;
+    gap: 10px;
+    align-content: start;
+    color: var(--accent-ink);
+  }
+  .beneficios h3 {
+    color: var(--ink);
+  }
+  .beneficios p {
+    color: var(--muted);
+  }
+  @media (max-width: 900px) {
+    .beneficios {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+  @media (max-width: 560px) {
+    .beneficios {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .antes-despues {
+    display: grid;
+    grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+    gap: clamp(32px, 5vw, 64px);
+    align-items: center;
+  }
+  .antes-despues .section-head {
+    margin: 0;
+  }
+  .antes-despues .btn {
+    justify-self: start;
+    margin-top: 6px;
+  }
+  .ad {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+  }
+  .ad figure {
+    margin: 0;
+    position: relative;
+  }
+  .ad img {
+    width: 100%;
+    aspect-ratio: 3 / 3.6;
+    object-fit: cover;
+    border-radius: 12px;
+  }
+  .ad figcaption {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    background: var(--ink);
+    color: #fff;
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 6px 10px;
+    border-radius: 6px;
+  }
+  .ad figure:last-child figcaption {
+    background: var(--accent);
+    color: var(--ink);
+  }
+  @media (max-width: 900px) {
+    .antes-despues {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .ref-box {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: 32px 64px;
+    align-items: end;
+    padding: clamp(32px, 5vw, 56px);
+    border: 1px solid var(--line);
+    border-radius: 20px;
+    background: var(--card);
+  }
+  .ref-box > div:first-child {
+    display: grid;
+    gap: 14px;
+  }
+  .ref-copy {
+    display: grid;
+    gap: 20px;
+    justify-items: start;
+  }
+  @media (max-width: 860px) {
+    .ref-box {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
